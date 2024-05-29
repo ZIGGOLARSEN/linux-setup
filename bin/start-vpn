@@ -1,0 +1,3 @@
+#!/bin/zsh
+
+sudo openvpn ~/hackthebox/vpn-files/lab_ZIGGOLARSEN.ovpn

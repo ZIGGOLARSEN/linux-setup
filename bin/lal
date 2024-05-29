@@ -1,0 +1,9 @@
+#!/bin/zsh
+
+if [ -d $1 ] || [ -z $1 ]; then
+	ls -lhA --color=auto $1
+elif [ -f $1 ]; then
+	cat $1
+else;
+	Error: file is not a regular file or directory
+fi
