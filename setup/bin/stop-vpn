@@ -1,5 +1,0 @@
-#!/bin/zsh
-
-pid=$(ps aux | grep openvpn | awk '{print $2}' | head -1)
-
-sudo kill -9 $pid
