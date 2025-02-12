@@ -1,0 +1,40 @@
+#!/bin/bash
+
+# Function to display usage
+usage() {
+    echo "Usage: $0 -l | -c"
+    exit 1
+}
+
+# Initialize variables to track options
+l_flag=false
+c_flag=false
+
+# Parse options using getopts
+while getopts "lc" opt; do
+    case "$opt" in
+        l) l_flag=true ;;
+        c) c_flag=true ;;
+        *) usage ;;
+    esac
+done
+
+# Check for invalid cases
+if [ "$l_flag" = true ] && [ "$c_flag" = true ]; then
+    echo "Error: Cannot set both -l and -c flags"
+    usage
+elif [ "$l_flag" = false ] && [ "$c_flag" = false ]; then
+    echo "Error: Must set either -l or -c flag"
+    usage
+fi
+
+# Output based on the set flag
+if [ "$l_flag" = true ]; then
+    name="lab"
+elif [ "$c_flag" = true ]; then
+    name="competitive"
+fi
+
+
+sudo openvpn ~/vpn-files/"$name"_ZIGGOLARSEN.ovpn
+

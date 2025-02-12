@@ -1,0 +1,36 @@
+#!/bin/bash
+
+verbose=0
+args=()
+
+# Parse options and positional arguments
+while [[ $# -gt 0 ]]; do
+  case $1 in
+    -v)
+      verbose=1
+      shift # Move to the next argument
+      ;;
+    *)
+      args+=("$1") # Collect positional arguments
+      shift # Move to the next argument
+      ;;
+  esac
+done
+
+# Use "${args[@]}" to access the positional arguments
+
+host=${args[0]}
+
+if [ "$verbose" -eq 1 ]; then
+  ports=$(nmap -p- -Pn -vvv -T4 $host | tee /dev/tty | grep 'Discovered' | awk '{print $4}' | cut -d '/' -f 1 | tr '\n' ',')
+else
+  ports=$(nmap -p- -Pn -vvv -T4 $host | grep 'Discovered' | awk '{print $4}' | cut -d '/' -f 1 | tr '\n' ',')
+fi
+
+name=$(pwd | awk -F/ '{print $NF}')
+
+if [ ! -d "nmap" ]; then
+  mkdir nmap
+fi
+
+nmap -Pn -sC -sV -p $ports -oA nmap/$name $host
